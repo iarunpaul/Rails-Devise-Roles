@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :admin_only, :except => :show
+  before_action :admin_only, :except => [:show, :index]
 
   def index
     @users = User.all
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     unless current_user.admin?
       unless @user == current_user
-        redirect_to root_path, :alert => "Access denied."
+        redirect_to :back, :alert => "Nah..Nah..Not an Admin..Watch your butt first!"
       end
     end
   end
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
   def admin_only
     unless current_user.admin?
-      redirect_to root_path, :alert => "Access denied."
+      redirect_to :back, :alert => "admin_only method runs, only admin can do this action."
     end
   end
 
